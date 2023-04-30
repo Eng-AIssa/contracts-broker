@@ -6,7 +6,8 @@ Contract Broker is a web application that organize the contractual relationship 
 - Sector represent the responsible agency about securing & managing the Properties that being rented
 - Tenant represent the customer who want to rent the Property from the owner
 
-
+<br>
+<br>
 ## Use Case Diagram
 
 <img width="500" src="https://raw.githubusercontent.com/Eng-AIssa/contracts-broker/main/public/use%20case%20diagram.png">
