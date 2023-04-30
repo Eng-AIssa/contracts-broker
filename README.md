@@ -1,5 +1,5 @@
 
-## About Contract Broker
+## About Contract Broker(still under development)
 
 Contract Broker is a web application that organize the contractual relationship between 3 contributers is the following: Owner, Tenant, Sector.
 - Owner represent the Property owner who need to rent the Property to customers
