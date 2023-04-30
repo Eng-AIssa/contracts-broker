@@ -11,8 +11,8 @@ Contract Broker is a web application that organize the contractual relationship 
 
 ## Use Case Diagram
 
-<img src="https://raw.githubusercontent.com/Eng-AIssa/contracts-broker/main/public/use%20case%20diagram.png">
+<img width="500" src="https://raw.githubusercontent.com/Eng-AIssa/contracts-broker/main/public/use%20case%20diagram.png">
 
 ## ER Diagram
 
-<img src="https://raw.githubusercontent.com/Eng-AIssa/contracts-broker/658133dcd69c264715031c7cd37ffcb572e1dad2/public/ER%20Diagram.svg">
+<img width="500" src="https://raw.githubusercontent.com/Eng-AIssa/contracts-broker/658133dcd69c264715031c7cd37ffcb572e1dad2/public/ER%20Diagram.svg">
