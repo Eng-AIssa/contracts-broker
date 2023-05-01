@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
@@ -40,30 +41,6 @@ Route::middleware('auth')->group(function () {
     })->name('succeeded');
 });
 
-
-Route::get('measure', function () {
-    dd([
-        'dumb' => Illuminate\Support\Benchmark::measure(fn() => DB::table('units')->select('id', 'code')->get()),
-        'db select' => Illuminate\Support\Benchmark::measure(fn() => DB::table('units')->select('id', 'code')->get()),
-        'db get some' => Illuminate\Support\Benchmark::measure(fn() => DB::table('units')->get(['id', 'code'])),
-        'db get all' => Illuminate\Support\Benchmark::measure(fn() => DB::table('units')->get()),
-        'dump line' => Illuminate\Support\Benchmark::measure(fn() => '----------------------------------'),
-        'model get some' => Illuminate\Support\Benchmark::measure(fn() => App\Models\Unit::get(['id', 'code'])),
-        'model all some' => Illuminate\Support\Benchmark::measure(fn() => App\Models\Unit::all(['id', 'code'])),
-        'model get all' => Illuminate\Support\Benchmark::measure(fn() => App\Models\Unit::get(['id', 'code'])),
-        'model all all' => Illuminate\Support\Benchmark::measure(fn() => App\Models\Unit::all(['id', 'code'])),
-        'model select' => Illuminate\Support\Benchmark::measure(fn() => App\Models\Unit::select('id', 'code')->get()),
-
-    ]);
-});
-
-Route::get('test', function () {
-    $contracts = \App\Models\Contract::take(10)->get()->groupBy('entry_date');
-
-    foreach ($contracts as $contract)
-        $contract->count() > 1 ? dd($contract) : 'continue';
-});
-
 Route::view('success', 'success-response');
 
-require __DIR__ . '/auth.php';
+
