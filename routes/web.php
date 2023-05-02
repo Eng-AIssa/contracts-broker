@@ -29,18 +29,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    //Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Contract
     Route::resource("contract", ContractController::class);
+    Route::get("contracts/{status}", [ContractController::class, 'indexStatus'])->name('indexStatus');
+    Route::get("contract/{contract}/file", [ContractController::class, 'showFile'])->name('showFile');
     Route::post("confirmContract/{contract}", [ContractController::class, 'confirm'])->name('contract.confirm');
+
     Route::resource("owner", OwnerController::class);
     Route::resource("sector", SectorController::class);
-    Route::get('process-success', function () {
-        return view('success-response');
-    })->name('succeeded');
+
 });
 
-Route::view('success', 'success-response');
-
-
+Route::view('process-success', 'success-response')->name('succeeded');

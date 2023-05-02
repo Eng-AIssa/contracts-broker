@@ -6,7 +6,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Contract') }}
+            {{ __('Update Contract') }} {{"#$contract->id"}}
         </h2>
     </x-slot>
 
@@ -15,9 +15,9 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('contract.store') }}">
+                    <form method="POST" action="{{ route('contract.update', $contract->id) }}">
                         @csrf
-                        @method('POST')
+                        @method('Put')
                         <x-errors-list/>
 
                         <fieldset>
@@ -30,7 +30,7 @@
                                     <x-custom-input-label for="entry-date" :value="__('Entry Date')"/>
 
                                     <x-date-input id="entry-date" name="entry_date"
-                                                  value="{{ old('entry_date') }}"
+                                                  value="{{ $contract->entry_date }}"
                                                   :error="$errors->get('entry_date')"/>
 
                                     <x-input-error :messages="$errors->get('entry_date')" class="mt-2"/>
@@ -39,7 +39,7 @@
                                     <x-custom-input-label for="leaving-date" :value="__('Leaving Date')"/>
 
                                     <x-date-input id="leaving-date" name="leaving_date"
-                                                  value="{{ old('leaving_date') }}"
+                                                  value="{{ $contract->leaving_date }}"
                                                   :error="$errors->get('leaving_date')"/>
 
                                     <x-input-error :messages="$errors->get('leaving_date')" class="mt-2"/>
@@ -60,7 +60,7 @@
                                                       :value="__('Select Unit')"
                                                       :error="$errors->get('unit_code')">
                                         @foreach($units as $unit)
-                                            <option value="{{$unit->id}}" {{isSelected(old('unit_code'), $unit->id)}}>
+                                            <option value="{{$unit->id}}" {{isSelected($contract->unit->id, $unit->id)}}>
                                                 {{$unit->code}}
                                             </option>
                                         @endforeach
@@ -73,7 +73,7 @@
 
                                     <x-custom-text-input id="rental-fees" name="rental_fees"
                                                          type="number" placeholder="In SAR"
-                                                         value="{{ old('rental_fees') }}"
+                                                         value="{{ $contract->rental_fees }}"
                                                          :error="$errors->get('rental_fees')"/>
 
                                     <x-input-error :messages="$errors->get('rental_fees')" class="mt-2"/>
@@ -92,7 +92,7 @@
 
                                     <x-custom-text-input id="resident-name" name="resident_name"
                                                          type="text" placeholder="Name"
-                                                         value="{{ old('resident_name') }}"
+                                                         value="{{ $contract->resident_name }}"
                                                          :error="$errors->get('resident_name')"/>
 
                                     <x-input-error :messages="$errors->get('resident_name')" class="mt-2"/>
@@ -102,7 +102,7 @@
 
                                     <x-custom-text-input id="resident-id" name="resident_id"
                                                          type="text" placeholder="Id Number"
-                                                         value="{{ old('resident_id') }}"
+                                                         value="{{ $contract->resident_id_number }}"
                                                          :error="$errors->get('resident_id')"/>
 
                                     <x-input-error :messages="$errors->get('resident_id')" class="mt-2"/>
@@ -115,7 +115,7 @@
 
                                     <x-custom-text-input id="resident-email" name="resident_email"
                                                          type="email" placeholder="Email Address"
-                                                         value="{{ old('resident_email') }}"
+                                                         value="{{ $contract->resident_email }}"
                                                          :error="$errors->get('resident_email')"/>
 
                                     <x-input-error :messages="$errors->get('resident_email')" class="mt-2"/>
@@ -126,7 +126,7 @@
 
                                     <x-custom-text-input id="resident-nationality" name="resident_nationality"
                                                          type="text" placeholder="Nationality"
-                                                         value="{{ old('resident_nationality') }}"
+                                                         value="{{ $contract->resident_nationality }}"
                                                          :error="$errors->get('resident_nationality')"/>
 
                                     <x-input-error :messages="$errors->get('resident_nationality')" class="mt-2"/>
@@ -135,22 +135,9 @@
                         </fieldset>
 
                         <fieldset>
-                            <div class="row my-2">
-                                <div class="col-md-5 mb-3">
-                                    <x-checkbox-input id="terms-and-conditions" name="terms_and_conditions"
-                                                      :error="$errors->get('terms_and_conditions')">
-
-                                        <x-custom-input-label for="terms-and-conditions"
-                                                              style="font-weight:400!important;"
-                                                              :value="__('Accept Terms & Conditions')"/>
-                                    </x-checkbox-input>
-
-                                    <x-input-error :messages="$errors->get('terms_and_conditions')" class="mt-2"/>
-                                </div>
-                            </div>
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-7 d-flex justify-content-start">
-                                    <x-primary-button style="height: 38px">{{ __('Save') }}</x-primary-button>
+                                    <x-primary-button style="height: 38px">{{ __('update') }}</x-primary-button>
                                 </div>
                             </div>
                         </fieldset>

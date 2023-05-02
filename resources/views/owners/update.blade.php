@@ -6,7 +6,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Owner') }}
+            {{ __('Update Owner') }}
         </h2>
     </x-slot>
 
@@ -15,9 +15,9 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('owner.store') }}">
+                    <form method="POST" action="{{ route('owner.update', $owner->id) }}">
                         @csrf
-                        @method('POST')
+                        @method('PUT')
                         <x-errors-list/>
 
                         <fieldset>
@@ -31,7 +31,7 @@
 
                                     <x-custom-text-input id="name" name="name"
                                                          type="text" placeholder="Name"
-                                                         value="{{ old('name') }}"
+                                                         value="{{ $owner->name }}"
                                                          :error="$errors->get('name')"/>
 
                                     <x-input-error :messages="$errors->get('name')" class="mt-2"/>
@@ -41,7 +41,7 @@
 
                                     <x-custom-text-input id="id-number" name="id_number"
                                                          type="text" placeholder="Id Number"
-                                                         value="{{ old('id_number') }}"
+                                                         value="{{ $owner->id_number }}"
                                                          :error="$errors->get('id_number')"/>
 
                                     <x-input-error :messages="$errors->get('id_number')" class="mt-2"/>
@@ -61,7 +61,7 @@
                                     <x-custom-text-input id="phone" name="phone"
                                                          pattern="[0]{1}[5]{1}[0-9]{8}"
                                                          type="tel" placeholder="05xxxxxxxx"
-                                                         value="{{ old('phone') }}"
+                                                         value="{{ $owner->phone }}"
                                                          :error="$errors->get('phone')"/>
 
                                     <x-input-error :messages="$errors->get('phone')" class="mt-2"/>
@@ -71,7 +71,7 @@
 
                                     <x-custom-text-input id="email" name="email"
                                                          type="email" placeholder="Email Address"
-                                                         value="{{ old('email') }}"
+                                                         value="{{ $owner->email }}"
                                                          :error="$errors->get('email')"/>
 
                                     <x-input-error :messages="$errors->get('email')" class="mt-2"/>
@@ -79,14 +79,10 @@
                             </div>
                         </fieldset>
 
-                        <div class="alert alert-secondary w-75 py-2 px-3">
-                            <b>{{ __('Note:') }}</b> {{ __('Password will be auto generated as Owner Id at first Login') }}
-                        </div>
-
                         <fieldset class="mt-4">
                             <div class="row">
                                 <div class="col-md-7 d-flex justify-content-start">
-                                    <x-primary-button style="height: 38px">{{ __('Save') }}</x-primary-button>
+                                    <x-primary-button style="height: 38px">{{ __('Update') }}</x-primary-button>
                                 </div>
                             </div>
                         </fieldset>

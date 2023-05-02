@@ -17,9 +17,11 @@ class SectorController extends Controller
      */
     public function index()
     {
-        $sectors = Sector::get();
+        $sectors = Sector::query()
+            ->select('id', 'code', 'registration_number', 'fees', 'manager_name', 'manager_phone', 'manager_id')
+            ->with('user:id,userable_type,userable_id,name,email')->paginate(5);
 
-        return view('sectors.index', compact('sectors'));
+        return view('sectors.index2', compact('sectors'));
     }
 
     /**

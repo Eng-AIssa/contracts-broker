@@ -12,6 +12,7 @@ use App\Notifications\verifyOtp;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
+use function Symfony\Component\String\s;
 
 
 class ContractController extends Controller
@@ -34,6 +35,26 @@ class ContractController extends Controller
         //$contracts = Contract::with('owner:id,name', 'unit:id,code')->get();
 
         return view('contracts.index2', compact('contracts', 'statuses'));
+    }
+
+    /**
+     * Display a listing of the resource based on status.
+     */
+    public function indexStatus($status = 'all')
+    {
+        $statuses = Contract::toBase()
+            ->selectRaw("count(1) as count")
+            ->selectRaw("count(case when status = 'معتمد' then 1 end) as confirmed")
+            ->selectRaw("count(case when status = 'مراجعة الوسيط' then 1 end) as review")
+            ->selectRaw("count(case when status = 'مرفوض' then 1 end) as rejected")
+            ->selectRaw("count(case when status = 'اعتماد المستأجر' then 1 end) as resident")
+            ->first();
+
+        $contracts = Contract::query()->where('status', $status)->latest()
+            ->withNames()->paginate(5)->sortDesc();
+        //$contracts = Contract::with('owner:id,name', 'unit:id,code')->get();
+
+        return view('contracts.index2', compact('contracts', 'statuses', 'status'));
     }
 
     /**
@@ -92,6 +113,14 @@ class ContractController extends Controller
      */
     public function show(Contract $contract)
     {
+        return view('contracts.show', compact("contract"));
+    }
+
+    /**
+     * Display the specified resource file.
+     */
+    public function showFile(Contract $contract)
+    {
         return view('contracts.draft', compact("contract"));
     }
 
@@ -100,7 +129,8 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
-        //
+        $units = Unit::query()->select('id', 'code')->get();
+        return view('contracts.update', compact('contract', 'units'));
     }
 
     /**
@@ -108,7 +138,27 @@ class ContractController extends Controller
      */
     public function update(UpdateContractRequest $request, Contract $contract)
     {
-        //
+        $data = $request->validated();
+
+        DB::transaction(function () use ($data, $contract) {
+
+            $resident = $contract->resident->update([
+                'name' => $data['resident_name'],
+                'id_number' => $data['resident_id'],
+                'email' => $data['resident_email'],
+                'nationality' => $data['resident_nationality']
+            ]);
+
+            $contract = $contract->update([
+                'unit_id' => $data['unit_code'],
+                'entry_date' => $data['entry_date'],
+                'leaving_date' => $data['leaving_date'],
+                'rental_fees' => $data['rental_fees'],
+            ]);
+        });
+
+        return redirect()->route('succeeded');
+
     }
 
     /**

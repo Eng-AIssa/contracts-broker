@@ -11,7 +11,7 @@ class UpdateContractRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class UpdateContractRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'entry_date' => ['required', 'date'],
+            'leaving_date' => ['required', 'date', 'after_or_equal:entry_date'],
+            'unit_code' => ['required', 'string', 'max:255', 'exists:units,id'],
+            'rental_fees' => ['numeric', 'between:1,100000'],
+            'resident_name' => ['required', 'string', 'between:3,100'],
+            'resident_id' => ['required', 'numeric', 'digits_between:10,11', 'starts_with:1,2'],
+            'resident_email' => ['required', 'string', 'email', 'max:255'],
+            'resident_nationality' => ['required', 'string', 'between:3,100']
         ];
     }
 }

@@ -17,11 +17,6 @@ class OwnerController extends Controller
      */
     public function index()
     {
-
-        #Dynamic Relationship
-        /*$owners = User::query()->select('id', 'userable_id', 'userable_type', 'name', 'email')
-            ->withLastContract()->with('userable:id,phone,id_number', 'lastContract:id',)->get();*/
-
         #Dynamic Column - getting one record/column from HasMany Relationship
         $owners = User::query()
             ->select('id', 'name', 'email')
@@ -78,7 +73,7 @@ class OwnerController extends Controller
      */
     public function edit(Owner $owner)
     {
-        //
+        return view('owners.update', compact('owner'));
     }
 
     /**
@@ -86,7 +81,23 @@ class OwnerController extends Controller
      */
     public function update(UpdateOwnerRequest $request, Owner $owner)
     {
-        //
+        $data = $request->validated();
+
+
+        DB::transaction(function () use ($data, $owner) {
+
+            $owner->update([
+                'id_number' => $data['id_number'],
+                'phone' => $data['phone'],
+            ]);
+
+            $owner->user->update([
+                'name' => $data['name'],
+                'email' => $data['email'],
+            ]);
+        });
+
+        return redirect()->route('succeeded');
     }
 
     /**

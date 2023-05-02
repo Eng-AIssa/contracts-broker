@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('All Contracts') }}
+{{--            {{ __('All Contracts') }}--}}
         </h2>
     </x-slot>
 
@@ -11,27 +11,6 @@
             <div class="md:flex md:items-center md:justify-between mb-5 mx-1">
                 <div
                     class="inline-flex overflow-hidden shadow-md bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-                    <a href="{{route('contract.index')}}">
-                        <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100
-                            {{request()->is('contract') ? 'bg-indigo-200' : ''}}">
-                            {{ __("View All") }}{{ ' - ' . $statuses->count}}
-                        </button>
-                    </a>
-                    <a href="{{route('indexStatus', 'معتمد')}}">
-                        <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100
-                            {{request()->is('contracts/معتمد') ? 'bg-indigo-200' : ''}}">
-                            {{ __("Confirmed") }}{{ ' - ' . $statuses->confirmed}}
-                        </button>
-                    </a>
-                    <a href="{{route('indexStatus', 'مرفوض')}}">
-                        <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100
-                            {{request()->is('contracts/مرفوض') ? 'bg-indigo-200' : ''}}">
-                            {{ __("Rejected") }}{{ ' - ' . $statuses->rejected}}
-                        </button>
-                    </a>
                 </div>
 
                 <div class="relative flex items-center shadow-md mt-4 md:mt-0">
@@ -52,66 +31,58 @@
                 <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="pl-6 py-4 font-medium text-gray-900">{{__('ID')}}</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Unit')}}</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Owner')}}</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Entry Date')}}</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Leaving Date')}}</th>
+                        <th scope="col" class="pl-6 py-4 font-medium text-gray-900">{{__('#')}}</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Name')}}</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Code')}}</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Registration')}}</th>
                         <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Fees')}}</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Status')}}</th>
-                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Creation')}}</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Manager Name')}}</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Manager Phone')}}</th>
+                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{__('Manager Id')}}</th>
                         <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
-                    @foreach($contracts as $contract)
+                    @foreach($sectors as $sector)
                         <tr class="hover:bg-gray-50">
                             <th class=" pl-6 py-4 font-normal text-gray-900">
-                                {{$contract->id}}
+                                {{$sector->id}}
                             </th>
                             <td class="px-6 py-4 whitespace-nowrap	">
-                                {{$contract->unit_code}}
+                                {{$sector->name}}
                             </td>
-                            <td class="px-6 py-4 font-normal text-gray-900">
-                                <div class="text-sm">
-                                    <div class="font-medium text-gray-700">{{$contract->owner_name}}</div>
-                                    <div class="text-gray-400">{{$contract->owner_mail}}</div>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap	">
+                                {{$sector->code}}
                             </td>
-                            <td class="px-6 py-4 ">
-                                {{$contract->entry_date}}
-                            </td>
-                            <td class="px-6 py-4 ">
-                                {{$contract->leaving_date}}
+                            <td class="px-6 py-4 whitespace-nowrap	">
+                                {{$sector->registration_number}}
                             </td>
                             <td class="py-4 px-6 text-sm font-medium text-gray-900 dark:text-white">
                             <span
                                 class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-600">
-                                {{__("SR")}}{{$contract->contract_fees}}
+                                {{__("SR")}}{{$sector->fees}}
                             </span>
+                            </td>
+                            <td class="px-6 py-4 font-normal text-gray-900">
+                                <div class="text-sm">
+                                    <div class="font-medium text-gray-700">{{$sector->manager_name}}</div>
+                                    <div class="text-gray-400">{{$sector->manager_email}}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 ">
+                                {{$sector->manager_phone}}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2">
                                 <span
                                     class="inline-flex items-center text-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                                    {{$contract->status}}
+                                    {{$sector->manager_id}}
                                 </span>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                {{$contract->created_at->toFormattedDateString()}}
-                            </td>
-                            <td class="px-6 py-4">
                                 <div class="flex justify-end gap-4">
-                                    <a href="{{route('showFile', $contract->id)}}">
-                                        <svg width="24" height="24" viewBox="0 0 24 24"
-                                             fill="none" stroke="#656565" stroke-width="1.5"
-                                             stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                                            <path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/>
-                                        </svg>
-                                    </a>
-                                    <a href="{{route('contract.show', $contract->id)}}">
+                                    <a href="{{route('sector.show', $sector->id)}}">
                                         <svg fill="none" viewBox="0 0 24 24"
                                              stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -120,7 +91,7 @@
                                                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         </svg>
                                     </a>
-                                    <a href="{{route('contract.edit', $contract->id)}}">
+                                    <a href="{{route('sector.edit', $sector->id)}}">
                                         <svg fill="none" viewBox="0 0 24 24"
                                              stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
