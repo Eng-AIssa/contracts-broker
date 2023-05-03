@@ -68,7 +68,7 @@ class SectorController extends Controller
      */
     public function show(Sector $sector)
     {
-        //
+        return view('sectors.show', compact("sector"));
     }
 
     /**
@@ -76,7 +76,7 @@ class SectorController extends Controller
      */
     public function edit(Sector $sector)
     {
-        //
+        return view('sectors.update', compact('sector'));
     }
 
     /**
@@ -84,7 +84,26 @@ class SectorController extends Controller
      */
     public function update(UpdateSectorRequest $request, Sector $sector)
     {
-        //
+        $data = $request->validated();
+
+        DB::transaction(function () use ($data, $sector) {
+
+            $sector->update([
+                'code' => $data['code'],
+                'registration_number' => $data['registration_number'],
+                'fees' => $data['contract_fees'],
+                'manager_name' => $data['manager_name'],
+                'manager_phone' => $data['manager_phone'],
+                'manager_id' => $data['manager_id'],
+            ]);
+
+            $sector->user->update([
+                'name' => $data['sector_name'],
+                'email' => $data['manager_email'],
+            ]);
+        });
+
+        return redirect()->route('succeeded');
     }
 
     /**

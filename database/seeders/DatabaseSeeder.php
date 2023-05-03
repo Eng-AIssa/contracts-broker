@@ -17,14 +17,14 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'userable_id' => 1,
             'userable_type' => 'App\Models\Owner',
-            'name' => 'Test User',
+            'name' => 'Eng.Abdulrahman',
             'email' => 'abd-wn2009@hotmail.com',
             'password' => Hash::make('12345678')
         ]);
 
         \App\Models\Owner::factory()->create([
             'id_number' => 2120226127,
-            'phone' => 0540326313,
+            'phone' => '0540326313',
             'created_by' => 1
         ]);
 

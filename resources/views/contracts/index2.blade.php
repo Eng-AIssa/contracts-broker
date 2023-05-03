@@ -10,24 +10,24 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="md:flex md:items-center md:justify-between mb-5 mx-1">
                 <div
-                    class="inline-flex overflow-hidden shadow-md bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
+                    class="inline-flex overflow-hidden shadow-md bg-white border divide-x rounded-lg rtl:flex-row-reverse">
                     <a href="{{route('contract.index')}}">
                         <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100
+                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm hover:bg-gray-100
                             {{request()->is('contract') ? 'bg-indigo-200' : ''}}">
                             {{ __("View All") }}{{ ' - ' . $statuses->count}}
                         </button>
                     </a>
                     <a href="{{route('indexStatus', 'معتمد')}}">
                         <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100
+                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm hover:bg-gray-100
                             {{request()->is('contracts/معتمد') ? 'bg-indigo-200' : ''}}">
                             {{ __("Confirmed") }}{{ ' - ' . $statuses->confirmed}}
                         </button>
                     </a>
                     <a href="{{route('indexStatus', 'مرفوض')}}">
                         <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100
+                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm hover:bg-gray-100
                             {{request()->is('contracts/مرفوض') ? 'bg-indigo-200' : ''}}">
                             {{ __("Rejected") }}{{ ' - ' . $statuses->rejected}}
                         </button>
@@ -37,14 +37,14 @@
                 <div class="relative flex items-center shadow-md mt-4 md:mt-0">
                     <span class="absolute">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
+                             stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
                         </svg>
                     </span>
 
                     <input type="text" placeholder="Search"
-                           class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+                           class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
                 </div>
             </div>
             <!-- component -->
@@ -84,7 +84,7 @@
                             <td class="px-6 py-4 ">
                                 {{$contract->leaving_date}}
                             </td>
-                            <td class="py-4 px-6 text-sm font-medium text-gray-900 dark:text-white">
+                            <td class="py-4 px-6 text-sm font-medium text-gray-900">
                             <span
                                 class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-600">
                                 {{__("SR")}}{{$contract->contract_fees}}

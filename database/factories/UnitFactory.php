@@ -23,10 +23,11 @@ class UnitFactory extends Factory
     {
         return [
             'code' => fake()->unique()->numerify('unit-####'),
-            'owner_id' => User::factory(),
-            'responsible_id' => function (array $attributes) {
-                return $attributes['owner_id'];
-            },
+            //assign unit ownership to random owner
+            'sector_id' => User::where('userable_type', 'App\Models\Sector')->get('id')->random(),
+            'owner_id' => User::where('userable_type', 'App\Models\Owner')->get('id')->random(),
+            //assign unit responsibility to random owner
+            'responsible_id' => User::where('userable_type', 'App\Models\Owner')->get('id')->random(),
             'responsible_as' => fake()->randomElement([UNIT::AS_OWNER, UNIT::AS_RENTER, UNIT::AS_AUTHORIZED]),
             'created_by' => function (array $attributes) {
                 return $attributes['owner_id'];

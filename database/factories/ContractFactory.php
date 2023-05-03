@@ -22,12 +22,11 @@ class ContractFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => $owner = User::factory()->create(),
-            'unit_id' => Unit::factory()
-                ->state(['owner_id' => $owner]),
+            'owner_id' => $owner = User::where('userable_type', 'App\Models\Owner')->get('id')->random(),
+            'unit_id' => Unit::where('owner_id', $owner->id)->get('id')->random(),
             'resident_id' => Resident::factory(),
-            'entry_date' => fake()->date(),
-            'leaving_date' => fake()->date(),
+            'entry_date' => fake()->dateTimeBetween($startDate =  '-3 month', 'now'),
+            'leaving_date' => fake()->dateTimeBetween('now', '+1 week'),
             'status' => fake()->randomElement(['اعتماد المستأجر', 'مرفوض', 'مراجعة الوسيط', 'دفع المالك', 'معتمد', 'ملغي قبل الدفع', 'ملغي بعد الدفع']),
             'contract_fees' => fake()->numberBetween(50, 300),
             'rental_fees' => fake()->numberBetween(200, 3000),

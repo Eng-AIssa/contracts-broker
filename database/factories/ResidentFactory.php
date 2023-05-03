@@ -18,7 +18,7 @@ class ResidentFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'id_number' => fake()->buildingNumber(),
+            'id_number' => fake()->randomElement([1,2]) . fake()->unique()->numerify('#########'),
             'email' => fake()->safeEmail(),
             'nationality' => fake()->city(),
         ];

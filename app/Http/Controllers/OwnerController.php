@@ -65,7 +65,7 @@ class OwnerController extends Controller
      */
     public function show(Owner $owner)
     {
-        //
+        return view('owners.show', compact("owner"));
     }
 
     /**

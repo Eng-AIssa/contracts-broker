@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
+            $table->foreignId('sector_id')->unsigned();
             $table->foreignId('owner_id')->unsigned();
             $table->foreignId('responsible_id')->unsigned();
             $table->enum('responsible_as', array('مالك', 'معيد التأجير', 'وكيل'));
@@ -23,6 +24,7 @@ return new class extends Migration {
             $table->foreign('owner_id')->references('id')->on('users');
             $table->foreign('responsible_id')->references('id')->on('users');
             $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('sector_id')->references('id')->on('users');
         });
     }
 

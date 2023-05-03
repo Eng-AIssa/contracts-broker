@@ -29,8 +29,8 @@ class StoreSectorRequest extends FormRequest
             'contract_fees' => ['nullable', 'numeric', 'between:1,100000'],
             'manager_name' => ['required', 'string', 'max:255'],
             'manager_email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'manager_phone' => ['required', 'string', 'size:10', "starts_with:05"],
-            'manager_id' => ['required', 'numeric', 'digits_between:10,11', 'starts_with:1,2'],
+            'manager_phone' => ['required', 'string', 'size:10', 'starts_with:05', 'unique:sectors,manager_phone'],
+            'manager_id' => ['required', 'numeric', 'digits_between:10,11', 'starts_with:1,2', 'unique:sectors,manager_id'],
         ];
     }
 }

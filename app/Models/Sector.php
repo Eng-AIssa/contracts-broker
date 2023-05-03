@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Sector extends Model
@@ -37,11 +39,23 @@ class Sector extends Model
     ];
 
 
+    /**
+     * Relations
+     */
     public function user(): MorphOne
     {
         return $this->morphOne(User::class, 'userable');
     }
 
+    public function units(): HasManyThrough
+    {
+        return $this->hasManyThrough(Unit::class, User::class, 'userable_id', 'sector_id');
+    }
+
+
+    /**
+     * Virtual Attributes
+     */
     public function name(): Attribute
     {
         return new Attribute(fn() => $this->user->name);

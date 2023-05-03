@@ -21,8 +21,8 @@ class OwnerFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_number' => fake()->unique()->buildingNumber(),
-            'phone' => fake()->phoneNumber(),
+            'id_number' => fake()->randomElement([1,2]) . fake()->unique()->numerify('#########'),
+            'phone' => fake()->unique()->numerify('05#######'),
             'created_by' => 1
         ];
     }
