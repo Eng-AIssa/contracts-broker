@@ -51,7 +51,7 @@
                                 <x-dropdown-input id="unit-code" name="unit_code"
                                                   :value="__('Select Unit')"
                                                   disabled="true">
-                                    <option value="{{$contract->id}}" selected>
+                                    <option value="{{$contract->unit->id}}" selected>
                                         {{$contract->unit->code}}
                                     </option>
                                 </x-dropdown-input>

@@ -36,6 +36,7 @@
                         </x-slot>
                     </x-dropdown2>
                 </div>
+
                 {{--<div class="hidden sm:flex sm:items-center sm:ml-6">
                     <x-dropdown2 align="left" width="48">
                         <x-slot name="trigger">
@@ -88,6 +89,25 @@
                             </x-dropdown-link>
 
                             <x-dropdown-link :href="route('sector.index')">
+                                {{ __('List') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown2>
+                </div>
+                <div class="hidden sm:flex sm:items-center sm:ml-6">
+                    <x-dropdown2 align="left" width="48">
+                        <x-slot name="trigger">
+                            <x-nav-link2 class="pointer" :active="request()->routeIs('unit.*')">
+                                {{ __('Units') }}
+                            </x-nav-link2>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('unit.create')">
+                                {{ __('Create') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('unit.index')">
                                 {{ __('List') }}
                             </x-dropdown-link>
                         </x-slot>

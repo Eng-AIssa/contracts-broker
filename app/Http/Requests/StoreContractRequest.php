@@ -25,7 +25,7 @@ class StoreContractRequest extends FormRequest
             'terms_and_conditions' => ['accepted'],
             'entry_date' => ['required', 'date', 'after_or_equal:today'],
             'leaving_date' => ['required', 'date', 'after_or_equal:entry_date'],
-            'unit_code' => ['required', 'string', 'max:255', 'exists:units,id'],
+            'unit_code' => ['required', 'string', 'exists:units,id'],
             'rental_fees' => ['numeric', 'between:1,100000'],
             'resident_name' => ['required', 'string', 'between:3,100'],
             'resident_id' => ['required', 'numeric', 'digits_between:10,11', 'starts_with:1,2'],

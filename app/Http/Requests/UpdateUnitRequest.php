@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUnitRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateUnitRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,14 @@ class UpdateUnitRequest extends FormRequest
      */
     public function rules(): array
     {
+        $unit = $this->route('unit');
+
         return [
-            //
+            'unit_code' => ['required', 'string', 'between:3,100', Rule::unique('units', 'code')->ignore($unit)],
+            'sector' => ['required', 'string', 'exists:users,id'],
+            'owner' => ['required', 'string', 'exists:users,id'],
+            'responsible' => ['required', 'string', 'exists:users,id'],
+            'responsible_as' => ['required', 'string', 'between:3,100'],
         ];
     }
 }

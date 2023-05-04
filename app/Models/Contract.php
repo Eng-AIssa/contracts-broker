@@ -21,6 +21,13 @@ class Contract extends Model
     const CERTIFIED = 'معتمد';
     const CANCELED = 'ملغي قبل الدفع';
     const CANCELED_AFTER_PAYMENT = 'ملغي بعد الدفع';
+    const CONTRACT_STATUSES = [
+        ['en' => 'Confirmed', 'ar' => 'معتمد'],
+        ['en' => 'Rejected', 'ar' => 'مرفوض'],
+        ['en' => 'Resident Confirm', 'ar' => 'اعتماد المستأجر'],
+        ['en' => 'Broker Review', 'ar' => 'مراجعة الوسيط'],
+    ];
+
     const FEES = 150;
 
     protected $table = 'contracts';

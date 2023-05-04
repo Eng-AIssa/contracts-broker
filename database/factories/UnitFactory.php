@@ -28,7 +28,7 @@ class UnitFactory extends Factory
             'owner_id' => User::where('userable_type', 'App\Models\Owner')->get('id')->random(),
             //assign unit responsibility to random owner
             'responsible_id' => User::where('userable_type', 'App\Models\Owner')->get('id')->random(),
-            'responsible_as' => fake()->randomElement([UNIT::AS_OWNER, UNIT::AS_RENTER, UNIT::AS_AUTHORIZED]),
+            'responsible_as' => fake()->randomElement(UNIT::RESPONSIBILITY_FORMS),
             'created_by' => function (array $attributes) {
                 return $attributes['owner_id'];
             }

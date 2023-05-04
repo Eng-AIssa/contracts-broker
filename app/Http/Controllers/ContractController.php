@@ -31,10 +31,10 @@ class ContractController extends Controller
             ->first();
 
         $contracts = Contract::query()->latest()
-            ->withNames()->paginate(5)->sortDesc();
-        //$contracts = Contract::with('owner:id,name', 'unit:id,code')->get();
+            ->withNames()->paginate(5);
+        $contract_statuses = Contract::CONTRACT_STATUSES;
 
-        return view('contracts.index2', compact('contracts', 'statuses'));
+        return view('contracts.index2', compact('contracts', 'contract_statuses', 'statuses'));
     }
 
     /**
@@ -51,10 +51,10 @@ class ContractController extends Controller
             ->first();
 
         $contracts = Contract::query()->where('status', $status)->latest()
-            ->withNames()->paginate(5)->sortDesc();
-        //$contracts = Contract::with('owner:id,name', 'unit:id,code')->get();
+            ->withNames()->paginate(5);
+        $contract_statuses = Contract::CONTRACT_STATUSES;
 
-        return view('contracts.index2', compact('contracts', 'statuses', 'status'));
+        return view('contracts.index2', compact('contracts', 'contract_statuses', 'statuses', 'status'));
     }
 
     /**

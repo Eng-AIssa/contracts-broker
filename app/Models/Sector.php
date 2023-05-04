@@ -17,7 +17,7 @@ class Sector extends Model
     protected $primaryKey = 'id';
 
 
-    protected $appends = ['name', 'manager_email'];
+    //protected $appends = ['name', 'manager_email'];
     protected $fillable = [
         'code',
         'registration_number',

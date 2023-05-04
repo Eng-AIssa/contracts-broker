@@ -119,6 +119,8 @@
                     @endforeach
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <div class="p-1 ">{{ $owners->links() }}  </div>
             </div>
         </div>
     </div>

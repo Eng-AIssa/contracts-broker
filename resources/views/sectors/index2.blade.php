@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-{{--            {{ __('All Contracts') }}--}}
+            {{ __('All Sectors') }}
         </h2>
     </x-slot>
 
@@ -104,6 +104,10 @@
                     @endforeach
                     </tbody>
                 </table>
+                @if($sectors->count() > 5)
+                    <!-- Pagination -->
+                    <div class="p-1 ">{{ $sectors->links() }}  </div>
+                @endif
             </div>
         </div>
     </div>

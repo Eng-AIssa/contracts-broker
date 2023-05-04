@@ -50,3 +50,8 @@
 .pointer{
     cursor: pointer;
 }
+
+label:after {
+    content:" *";
+    color: red;
+}

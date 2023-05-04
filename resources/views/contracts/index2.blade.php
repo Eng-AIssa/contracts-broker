@@ -18,20 +18,15 @@
                             {{ __("View All") }}{{ ' - ' . $statuses->count}}
                         </button>
                     </a>
-                    <a href="{{route('indexStatus', 'معتمد')}}">
-                        <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm hover:bg-gray-100
-                            {{request()->is('contracts/معتمد') ? 'bg-indigo-200' : ''}}">
-                            {{ __("Confirmed") }}{{ ' - ' . $statuses->confirmed}}
-                        </button>
-                    </a>
-                    <a href="{{route('indexStatus', 'مرفوض')}}">
-                        <button
-                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm hover:bg-gray-100
-                            {{request()->is('contracts/مرفوض') ? 'bg-indigo-200' : ''}}">
-                            {{ __("Rejected") }}{{ ' - ' . $statuses->rejected}}
-                        </button>
-                    </a>
+                    @foreach($contract_statuses as $status)
+                        <a href="{{route('indexStatus', $status['ar'])}}">
+                            <button
+                                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm hover:bg-gray-100
+                            {{request()->is('contracts/' . $status['ar']) ? 'bg-indigo-200' : ''}}">
+                                {{ $status['en'] }}
+                            </button>
+                        </a>
+                    @endforeach
                 </div>
 
                 <div class="relative flex items-center shadow-md mt-4 md:mt-0">
@@ -133,6 +128,8 @@
                     @endforeach
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <div class="p-1 ">{{ $contracts->links() }}  </div>
             </div>
         </div>
     </div>

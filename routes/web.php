@@ -4,6 +4,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UnitController;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -40,8 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::get("contract/{contract}/file", [ContractController::class, 'showFile'])->name('showFile');
     Route::post("confirmContract/{contract}", [ContractController::class, 'confirm'])->name('contract.confirm');
 
+    //Unit
+    Route::resource("unit", UnitController::class);
+    Route::get("units/{status}", [UnitController::class, 'indexBySector'])->name('indexBySector');
+
     Route::resource("owner", OwnerController::class);
     Route::resource("sector", SectorController::class);
+
 
 });
 

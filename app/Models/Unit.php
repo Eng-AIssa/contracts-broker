@@ -12,9 +12,10 @@ class Unit extends Model
 {
     use HasFactory;
 
-    const AS_OWNER = 'مالك';
-    const AS_RENTER = 'معيد التأجير';
-    const AS_AUTHORIZED = 'وكيل';
+    //const AS_OWNER = 'مالك';
+    //const AS_RENTER = 'معيد التأجير';
+    //const AS_AUTHORIZED = 'وكيل';
+    const RESPONSIBILITY_FORMS = ['مالك', 'معيد التأجير', 'وكيل'];
 
     protected $table = 'units';
     protected $primaryKey = 'id';
@@ -25,7 +26,8 @@ class Unit extends Model
         'owner_id',
         'sector_id',
         'responsible_id',
-        'responsible_as'
+        'responsible_as',
+        'created_by'
     ];
 
     protected $casts = [
@@ -54,7 +56,7 @@ class Unit extends Model
 
     public function sector(): BelongsTo
     {
-        return $this->belongsTo(Sector::class, 'sector_id', 'id');
+        return $this->belongsTo(User::class, 'sector_id', 'id');
     }
 
     public function responsible(): BelongsTo
@@ -66,15 +68,19 @@ class Unit extends Model
     /**
      * Dynamic Relations/Columns
      */
-    public function scopeWithNames(Builder $query): void
+    public function scopeWithFullInfo(Builder $query): void
     {
         $query->addSelect([
             'owner_name' => User::select('name')
                 ->whereColumn('id', 'units.owner_id'),
             'owner_mail' => User::select('email')
                 ->whereColumn('id', 'units.owner_id'),
-            'sector_name' => Unit::select('name')
-                ->whereColumn('id', 'units.unit_id')
+            'responsible_name' => User::select('name')
+                ->whereColumn('id', 'units.responsible_id'),
+            'responsible_mail' => User::select('email')
+                ->whereColumn('id', 'units.responsible_id'),
+            'sector_name' => User::select('name')
+                ->whereColumn('id', 'units.sector_id')
         ]);
     }
 }
