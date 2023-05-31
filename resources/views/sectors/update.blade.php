@@ -31,7 +31,7 @@
 
                                     <x-custom-text-input id="sector-name" name="sector_name"
                                                          type="text" placeholder="{{ __('Sector Name') }}"
-                                                         value="{{ $sector->name }}"
+                                                         value="{{ $sector->user->name }}"
                                                          :error="$errors->get('sector_name')"/>
 
                                     <x-input-error :messages="$errors->get('sector_name')" class="mt-2"/>

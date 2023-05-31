@@ -18,11 +18,12 @@ class OwnerController extends Controller
     public function index()
     {
         #Dynamic Column - getting one record/column from HasMany Relationship
-        $owners = User::query()
+        #moved to livewire component
+        /*$owners = User::query()
             ->select('id', 'name', 'email')
-            ->withFullInfo()->withLastContractId()->with('units:id,code,owner_id')->paginate(5);
+            ->withFullOwnerInfo()->withLastContractId()->with('units:id,code,owner_id')->paginate(5);*/
 
-        return view('owners.index2', compact('owners'));
+        return view('owners.index2'/*, compact('owners')*/);
     }
 
     /**

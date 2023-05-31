@@ -25,7 +25,7 @@ class ContractFactory extends Factory
             'owner_id' => $owner = User::where('userable_type', 'App\Models\Owner')->get('id')->random(),
             'unit_id' => Unit::where('owner_id', $owner->id)->get('id')->random(),
             'resident_id' => Resident::factory(),
-            'entry_date' => fake()->dateTimeBetween($startDate =  '-3 month', 'now'),
+            'entry_date' => fake()->dateTimeBetween($startDate =  '-5 month', 'now'),
             'leaving_date' => fake()->dateTimeBetween('now', '+1 week'),
             'status' => fake()->randomElement(['اعتماد المستأجر', 'مرفوض', 'مراجعة الوسيط', 'دفع المالك', 'معتمد', 'ملغي قبل الدفع', 'ملغي بعد الدفع']),
             'contract_fees' => fake()->numberBetween(50, 300),
@@ -34,6 +34,7 @@ class ContractFactory extends Factory
             'created_by' => function (array $attributes) {
                 return $attributes['owner_id'];
             },
+            'created_at' => fake()->dateTimeBetween($startDate =  '-5 month', 'now'),
         ];
     }
 }

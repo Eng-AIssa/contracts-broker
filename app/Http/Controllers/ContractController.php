@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConfirmContractRequest;
-use App\Models\Owner;
 use App\Models\Unit;
 use App\Models\Resident;
 use App\Models\Contract;
-use App\Models\User;
 use App\Notifications\verifyOtp;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
-use function Symfony\Component\String\s;
 
 
 class ContractController extends Controller
@@ -22,7 +20,7 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $statuses = Contract::toBase()
+        /*$statuses = Contract::toBase()
             ->selectRaw("count(1) as count")
             ->selectRaw("count(case when status = 'معتمد' then 1 end) as confirmed")
             ->selectRaw("count(case when status = 'مراجعة الوسيط' then 1 end) as review")
@@ -31,30 +29,10 @@ class ContractController extends Controller
             ->first();
 
         $contracts = Contract::query()->latest()
-            ->withNames()->paginate(5);
+            ->withNames()->paginate(5);*/
         $contract_statuses = Contract::CONTRACT_STATUSES;
 
-        return view('contracts.index2', compact('contracts', 'contract_statuses', 'statuses'));
-    }
-
-    /**
-     * Display a listing of the resource based on status.
-     */
-    public function indexStatus($status = 'all')
-    {
-        $statuses = Contract::toBase()
-            ->selectRaw("count(1) as count")
-            ->selectRaw("count(case when status = 'معتمد' then 1 end) as confirmed")
-            ->selectRaw("count(case when status = 'مراجعة الوسيط' then 1 end) as review")
-            ->selectRaw("count(case when status = 'مرفوض' then 1 end) as rejected")
-            ->selectRaw("count(case when status = 'اعتماد المستأجر' then 1 end) as resident")
-            ->first();
-
-        $contracts = Contract::query()->where('status', $status)->latest()
-            ->withNames()->paginate(5);
-        $contract_statuses = Contract::CONTRACT_STATUSES;
-
-        return view('contracts.index2', compact('contracts', 'contract_statuses', 'statuses', 'status'));
+        return view('contracts.index2', compact('contract_statuses'));
     }
 
     /**
@@ -75,35 +53,40 @@ class ContractController extends Controller
     {
         $data = $request->validated();
 
-        DB::transaction(function () use ($data) {
+        try {
+            DB::transaction(function () use ($data) {
 
-            $unit = Unit::find($data['unit_code']);
+                $unit = Unit::find($data['unit_code']);
 
-            $resident = Resident::create([
-                'name' => $data['resident_name'],
-                'id_number' => $data['resident_id'],
-                'email' => $data['resident_email'],
-                'nationality' => $data['resident_nationality']
-            ]);
+                $resident = Resident::create([
+                    'name' => $data['resident_name'],
+                    'id_number' => $data['resident_id'],
+                    'email' => $data['resident_email'],
+                    'nationality' => $data['resident_nationality']
+                ]);
 
-            $contract = Contract::create([
-                'owner_id' => $unit->owner_id,
-                'unit_id' => $unit->id,
-                'resident_id' => $resident->id,
-                'entry_date' => $data['entry_date'],
-                'leaving_date' => $data['leaving_date'],
-                'rental_fees' => $data['rental_fees'],
-                'status' => Contract::RESIDENT,
-                'otp' => rand(1000, 9999),
-                'created_by' => auth()->id(),
-                'contract_fees' => Contract::FEES
-            ]);
+                $contract = Contract::create([
+                    'owner_id' => $unit->owner_id,
+                    'unit_id' => $unit->id,
+                    'resident_id' => $resident->id,
+                    'entry_date' => $data['entry_date'],
+                    'leaving_date' => $data['leaving_date'],
+                    'rental_fees' => $data['rental_fees'],
+                    'status' => Contract::RESIDENT,
+                    'otp' => rand(1000, 9999),
+                    'created_by' => auth()->id(),
+                    'contract_fees' => Contract::FEES
+                ]);
 
-            $owner = $unit->owner;
-            $owner->residents()->attach($resident);
+                $owner = $unit->owner;
+                $owner->residents()->attach($resident);
 
-            $resident->notify(new verifyOtp($contract->id, $contract->otp));
-        });
+                $resident->notify(new verifyOtp($contract->id, $contract->otp));
+            });
+        } catch (\Exception $e) {
+            return view('message-response',
+                ['message' => 'Something went wrong due to duplication, kindly check contract existence before retrying again.']);
+        }
 
         return redirect()->route('succeeded');
     }
@@ -175,7 +158,10 @@ class ContractController extends Controller
     public function confirm(confirmContractRequest $request, Contract $contract)
     {
         $contract->update([
-            'status' => Contract::BROKER
+            'status' => Contract::BROKER,
+            'otp' => null,
         ]);
+
+        return redirect()->route('succeeded')->with('message', 'Thank you, have a good day');
     }
 }

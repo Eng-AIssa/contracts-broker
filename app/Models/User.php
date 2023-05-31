@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -78,6 +77,31 @@ class User extends Authenticatable
 
 
     /**
+     * Scope a query to only include certain users.
+     */
+
+    public function scopeSector(Builder $query): void
+    {
+        $query->where('userable_type', '=', 'App\Models\Sector');
+    }
+
+    public function scopeOwner(Builder $query): void
+    {
+        $query->where('userable_type', '=', 'App\Models\Owner');
+    }
+
+    public function scopeSearchName(Builder $query, string $search): void
+    {
+        $query->where('name', 'like', '%' . $search . '%');
+    }
+
+    public function scopeOrSearchEmail(Builder $query, string $search): void
+    {
+        $query->orWhere('email', 'like', '%' . $search . '%');
+    }
+
+
+    /**
      * Dynamic Relations/Columns
      */
     public function lastContract(): BelongsTo
@@ -92,13 +116,31 @@ class User extends Authenticatable
         ]);
     }
 
-    public function scopeWithFullInfo(Builder $query): void
+    public function scopeWithFullOwnerInfo(Builder $query): void
     {
         $query->addSelect([
             "phone" => Owner::select('phone')
-                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Owner')->latest()->take(1),
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Owner'),
             "id_number" => Owner::select('id_number')
-                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Owner')->latest()->take(1)
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Owner')
+        ]);;
+    }
+
+    public function scopeWithFullSectorInfo(Builder $query): void
+    {
+        $query->addSelect([
+            "code" => Sector::select('code')
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Sector'),
+            "registration_number" => Sector::select('registration_number')
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Sector'),
+            "fees" => Sector::select('fees')
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Sector'),
+            "manager_name" => Sector::select('manager_name')
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Sector'),
+            "manager_phone" => Sector::select('manager_phone')
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Sector'),
+            "manager_id" => Sector::select('manager_id')
+                ->whereColumn('id', 'users.userable_id')->where('userable_type', 'App\Models\Sector')
         ]);;
     }
 }

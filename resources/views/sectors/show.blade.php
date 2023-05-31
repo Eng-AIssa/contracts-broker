@@ -27,7 +27,7 @@
 
                                 <x-custom-text-input id="sector-name" name="sector_name"
                                                      type="text" placeholder="{{ __('Sector Name') }}"
-                                                     value="{{ $sector->name }}"
+                                                     value="{{ $sector->user->name }}"
                                                      disabled="true"/>
                             </div>
                             <div class="col-md-5 mb-3 offset-md-1">

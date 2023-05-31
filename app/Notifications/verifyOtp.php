@@ -41,7 +41,7 @@ class verifyOtp extends Notification
         return (new MailMessage)
             ->greeting('Welcome to Contracts Management')
             ->line("Use: $this->otp to Verify the Contract")
-            ->action('Show Contract', url("/contract/$this->contract_id"))
+            ->action('Show Contract', url("/contract/$this->contract_id/file"))
             ->salutation('Have a good day :)!');
     }
 

@@ -62,6 +62,21 @@ class Owner extends Model
         return $this->hasManyThrough(Unit::class, User::class, 'userable_id', 'owner_id');
     }
 
+
+    /**
+     * Scope a query to only include certain owners.
+     */
+    public function scopeSearchIdNumber(Builder $query, string $search): void
+    {
+        $query->where('id_number', 'like', '%' . $search . '%');
+    }
+
+    public function scopeOrSearchPhone(Builder $query, string $search): void
+    {
+        $query->orWhere('phone', 'like', '%' . $search . '%');
+    }
+
+
     /**
      * Dynamic Relations/Columns
      */

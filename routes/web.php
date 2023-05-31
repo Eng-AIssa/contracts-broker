@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UnitController;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::view('/', 'dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/', DashboardController::class);
 });
 
 
@@ -37,14 +36,10 @@ Route::middleware('auth')->group(function () {
 
     //Contract
     Route::resource("contract", ContractController::class);
-    Route::get("contracts/{status}", [ContractController::class, 'indexStatus'])->name('indexStatus');
     Route::get("contract/{contract}/file", [ContractController::class, 'showFile'])->name('showFile');
     Route::post("confirmContract/{contract}", [ContractController::class, 'confirm'])->name('contract.confirm');
 
-    //Unit
     Route::resource("unit", UnitController::class);
-    Route::get("units/{status}", [UnitController::class, 'indexBySector'])->name('indexBySector');
-
     Route::resource("owner", OwnerController::class);
     Route::resource("sector", SectorController::class);
 

@@ -14,9 +14,9 @@ class Contract extends Model
 {
     use HasFactory, HasUuids;
 
+    const BROKER = 'مراجعة الوسيط';
     const RESIDENT = 'اعتماد المستأجر';
     const REJECTED = 'مرفوض';
-    const BROKER = 'مراجعة الوسيط';
     const OWNER = 'دفع المالك';
     const CERTIFIED = 'معتمد';
     const CANCELED = 'ملغي قبل الدفع';
@@ -80,6 +80,25 @@ class Contract extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+
+    /**
+     * Scope a query to only include certain Contracts.
+     */
+    public function scopeSearchId(Builder $query, string $search): void
+    {
+        $query->where('id', 'like', '%' . $search . '%');
+    }
+
+    public function scopeOrSearchEntryDate(Builder $query, string $search): void
+    {
+        $query->orWhere('entry_date', 'like', '%' . $search . '%');
+    }
+
+    public function scopeSelectStatus(Builder $query, string $status): void
+    {
+        $query->where('status', 'like', $status);
     }
 
 
@@ -154,9 +173,26 @@ class Contract extends Model
     {
         return $this->otp == $otp;
     }
-
     public function isPending(): bool
     {
         return $this->status == Contract::RESIDENT;
+    }
+
+    public static function contractsCountOfEachMonth($status = 'معتمد', $year = 2023): array
+    {
+        return (array)$confirmed = Contract::toBase()->where('status', $status)
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-01-01' AND '2023-01-31' then 1 end) as jan")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-02-01' AND '2023-02-31' then 1 end) as feb")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-03-01' AND '2023-03-31' then 1 end) as mar")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-04-01' AND '2023-04-31' then 1 end) as apr")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-05-01' AND '2023-05-31' then 1 end) as may")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-06-01' AND '2023-06-31' then 1 end) as jun")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-07-01' AND '2023-07-31' then 1 end) as jul")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-08-01' AND '2023-08-31' then 1 end) as aug")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-09-01' AND '2023-09-31' then 1 end) as sept")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-10-01' AND '2023-10-31' then 1 end) as oct")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-11-01' AND '2023-11-31' then 1 end) as nov")
+            ->selectRaw("count(case when `created_at` BETWEEN '$year-12-01' AND '2023-12-31' then 1 end) as des")
+            ->first();
     }
 }

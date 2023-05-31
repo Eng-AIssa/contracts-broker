@@ -66,21 +66,15 @@ class Unit extends Model
 
 
     /**
-     * Dynamic Relations/Columns
+     * Scope a query to only include certain users.
      */
-    public function scopeWithFullInfo(Builder $query): void
+    public function scopeSearchCode(Builder $query, string $search): void
     {
-        $query->addSelect([
-            'owner_name' => User::select('name')
-                ->whereColumn('id', 'units.owner_id'),
-            'owner_mail' => User::select('email')
-                ->whereColumn('id', 'units.owner_id'),
-            'responsible_name' => User::select('name')
-                ->whereColumn('id', 'units.responsible_id'),
-            'responsible_mail' => User::select('email')
-                ->whereColumn('id', 'units.responsible_id'),
-            'sector_name' => User::select('name')
-                ->whereColumn('id', 'units.sector_id')
-        ]);
+        $query->where('code', 'like', '%' . $search . '%');
+    }
+
+    public function scopeSelectSector(Builder $query, string $sector): void
+    {
+        $query->where('sector_id', 'like', $sector);
     }
 }

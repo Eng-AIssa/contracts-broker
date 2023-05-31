@@ -11,9 +11,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="row flex justify-center items-center">
-                        <img src="{{url('/check.png')}}" width="175px" height="175px" alt="success sticker"
+                        <img src="{{url('/Exclamation.png')}}" width="175px" height="175px" alt="success sticker"
                              style="padding-right: 20px"/>
-                        <p style="font-size: 40px;">{{ Session::get('message') ?? __('Succeeded') }}</p>
+                        <p style="font-size: 40px;">{{ $message }}</p>
                     </div>
                 </div>
             </div>

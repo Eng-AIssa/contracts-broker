@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -54,9 +54,33 @@ class Sector extends Model
 
 
     /**
+     * Scope a query to only include certain sectors.
+     */
+
+    public function scopeSector(Builder $query): void
+    {
+        $query->where('userable_type', '=', 'App\Models\Sector');
+    }
+    public function scopeOwner(Builder $query): void
+    {
+        $query->where('userable_type', '=', 'App\Models\Owner');
+    }
+
+    public function scopeSearchManagerPhone(Builder $query, string $search): void
+    {
+        $query->where('manager_phone', 'like', '%' . $search . '%');
+    }
+
+    public function scopeOrSearchRegisterNumber(Builder $query, string $search): void
+    {
+        $query->orWhere('registration_number', 'like', '%' . $search . '%');
+    }
+
+
+    /**
      * Virtual Attributes
      */
-    public function name(): Attribute
+    public function SectorName(): Attribute
     {
         return new Attribute(fn() => $this->user->name);
     }
@@ -64,5 +88,19 @@ class Sector extends Model
     public function managerEmail(): Attribute
     {
         return new Attribute(fn() => $this->user->email);
+    }
+
+
+    /**
+     * Dynamic Relations/Columns
+     */
+    public function scopeWithFullInfo(Builder $query): void
+    {
+        $query->addSelect([
+            "name" => User::select('name')
+                ->whereColumn('userable_id', 'sectors.id')->where('userable_type', 'App\Models\Sector')->latest()->take(1),
+            "email" => User::select('email')
+                ->whereColumn('userable_id', 'sectors.id')->where('userable_type', 'App\Models\Sector')->latest()->take(1),
+        ]);
     }
 }

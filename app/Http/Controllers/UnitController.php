@@ -17,23 +17,11 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $units = Unit::query()->latest()
+        /*$units = Unit::query()->latest()
             ->WithFullInfo()->paginate(5);
-        $sectors = User::query()->where('userable_type', 'App\Models\Sector')->select('id', 'name')->get();
+        $sectors = User::query()->where('userable_type', 'App\Models\Sector')->select('id', 'name')->get();*/
 
-        return view('units.index', compact('units', 'sectors'));
-    }
-
-    /**
-     * Display a listing of the resource based on sector.
-     */
-    public function indexBySector($sector)
-    {
-        $units = Unit::query()->where('sector_id', $sector)->latest()
-            ->WithFullInfo()->paginate(5);
-        $sectors = User::query()->where('userable_type', 'App\Models\Sector')->select('id', 'name')->get();
-
-        return view('units.index', compact('units', 'sectors'));
+        return view('units.index'/*, compact('units', 'sectors')*/);
     }
 
     /**

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('contracts', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->unique();
             $table->foreignId('owner_id')->unsigned();
             $table->foreignId('unit_id')->unsigned();
             $table->foreignId('resident_id')->unsigned();
@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->enum('status', array('اعتماد المستأجر', 'مرفوض', 'مراجعة الوسيط', 'دفع المالك', 'معتمد', 'ملغي قبل الدفع', 'ملغي بعد الدفع'));
             $table->double('contract_fees');
             $table->double('rental_fees')->nullable();
-            $table->string('otp');
+            $table->string('otp')->nullable();
             $table->foreignId('created_by')->unsigned();
             $table->timestamps();
 
@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->foreign('unit_id')->references('id')->on('units');
             $table->foreign('resident_id')->references('id')->on('residents');
             $table->foreign('created_by')->references('id')->on('users');
+            $table->unique(['unit_id', 'entry_date', 'leaving_date']);
         });
     }
 
